@@ -1,0 +1,245 @@
+/**
+ * This injects Tailwind's base styles, which is a combination of
+ * Normalize.css and some additional base styles.
+ *
+ * You can see the styles here:
+ * https://unpkg.com/tailwindcss/dist/base.css
+ *
+ * If using `postcss-import`, use this import instead:
+ *
+ * @import "tailwindcss/base";
+ */
+ @tailwind base;
+
+ body{
+   color: #49545a;
+ }
+ h1 {
+  @apply text-3xl;
+}
+h2 {
+  @apply text-2xl;
+}
+h3 {
+  @apply text-xl;
+}
+h4 {
+  @apply text-lg;
+}
+main ul{
+  @apply list-disc list-inside;
+}
+main ol{
+  @apply list-decimal list-inside;
+}
+a {
+  @apply duration-100 ease-in transform text-curious-blue-500;
+}
+p{
+  @apply mb-4;
+}
+li p {
+  @apply inline;
+}
+ol li p {
+  @apply pl-2;
+}
+
+ /**
+  * This injects any component classes registered by plugins.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  * @import "tailwindcss/components";
+  */
+ @tailwind components;
+
+ /**
+  * Here you would add any of your custom component classes; stuff that you'd
+  * want loaded *before* the utilities so that the utilities could still
+  * override them.
+  *
+  * Example:
+  *
+  * .btn { ... }
+  * .form-input { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "components/buttons";
+  * @import "components/forms";
+  */
+  html {
+    scroll-behavior: smooth;
+  }
+
+[v-cloak] {display: none}
+@font-face {
+    font-family: 'Aldi';
+    src: url("../fonts/Aldi/Aldi-Regular.otf") format("opentype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: 'Aldi';
+    src: url("../fonts/Aldi/Aldi-Bold.otf") format("opentype");
+    font-weight: normal;
+     font-style: 700;
+  }
+  @font-face {
+    font-family: 'Clambake';
+    src: url("../fonts/Clambake/ClambakeOctoberSixRegular.otf") format("opentype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: 'Clambake';
+    src: url("../fonts/Clambake/ClambakeOctoberSixBold.otf") format("opentype");
+    font-weight: 700;
+  }
+
+ @font-face {
+   font-family: 'Barlow Condensed';
+   src: url("../fonts/BarlowCondensed/BarlowCondensed-Regular.ttf") format("truetype");
+   font-weight: normal;
+  font-style: normal;
+ }
+ @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-Light.ttf") format("truetype");
+    font-weight: 300;
+     font-style: normal;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-Bold.ttf") format("truetype");
+    font-weight: 700;
+     font-style: normal;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-Black.ttf") format("truetype");
+    font-weight: 900;
+     font-style: normal;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-Italic.ttf") format("truetype");
+    font-weight: normal;
+     font-style: italic;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-LightItalic.ttf") format("truetype");
+    font-weight: 300;
+     font-style: italic;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+     font-style: italic;
+  }
+  @font-face {
+    font-family: 'Barlow Condensed';
+    src: url("../fonts/BarlowCondensed/BarlowCondensed-BlackItalic.ttf") format("truetype");
+    font-weight: 900;
+     font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-book.otf") format("opentype");
+    font-weight: 400;
+     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-bookitalic.otf") format("opentype");
+    font-weight: 400;
+     font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-medium.otf") format("opentype");
+    font-weight: 500;
+     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-mediumitalic.otf") format("opentype");
+    font-weight: 500;
+     font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-semibold.otf") format("opentype");
+    font-weight: 600;
+     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-semibolditalic.otf") format("opentype");
+    font-weight: 600;
+     font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-bold.otf") format("opentype");
+    font-weight: 700;
+     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Whitney';
+    src: url("../fonts/Whitney/whitney-bolditalicsc.otf") format("opentype");
+    font-weight: 700;
+     font-style: italic;
+  }
+
+  .dropdown{
+    @apply transition-opacity duration-100 ease-out;
+  }
+  .dropdown:hover > .dropdown-content {
+    display: block;
+  }
+
+  .shadow-t{
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.05), 0 0px 5px 0 rgba(0, 0, 0, 0.06)
+  }
+
+  .fill-transparent{
+    fill: none;
+  }
+
+  .activity-content img{
+    text-align: center;
+  }
+ /**
+  * This injects all of Tailwind's utility classes, generated based on your
+  * config file.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  * @import "tailwindcss/utilities";
+  */
+ @tailwind utilities;
+
+ /**
+  * Here you would add any custom utilities you need that don't come out of the
+  * box with Tailwind.
+  *
+  * Example :
+  *
+  * .bg-pattern-graph-paper { ... }
+  * .skew-45 { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "utilities/background-patterns";
+  * @import "utilities/skew-transforms";
+  */

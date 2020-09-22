@@ -48,6 +48,13 @@ export default {
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
 
+  // Tailwind
+  tailwindcss: {
+    cssPath: '~/assets/css/tailwind.css',
+    configPath: 'tailwind.config.js',
+    exposeConfig: false,
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }
