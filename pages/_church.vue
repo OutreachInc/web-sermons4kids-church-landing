@@ -75,7 +75,7 @@
       </div>
     </div>
   </div>
-  <div class="sticky bottom-0 w-full h-20 bg-transparent" :style="gradientBackground">
+  <div class="sticky bottom-0 w-full h-20 overflow-hidden bg-transparent" :style="gradientBackground">
     <div class="absolute top-0 w-full h-40 footer-flow-divider"></div>
   </div>
 </div>
