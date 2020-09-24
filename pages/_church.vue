@@ -3,7 +3,7 @@
   <div class="relative h-80" :style="gradientBackground">
     <div class="z-10 flex items-center justify-between w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <h2>
-        <NuxtLink :to="slug" class="font-sans text-3xl font-semibold tracking-tight text-white opacity-75">{{ church.title }}</NuxtLink>
+        <NuxtLink :to="churchUrl" class="font-sans text-3xl font-semibold tracking-tight text-white opacity-75">{{ church.title }}</NuxtLink>
       </h2>
       <Dropdown :label="church.grade.title" :items="dropdownItems" class="mt-4"></Dropdown>
     </div>
@@ -91,17 +91,15 @@
 
 <script>
 import { DateTime } from "luxon";
-import Dropdown from "../components/Dropdown.vue";
 export default {
-  async asyncData({ params }) {
-    const slug = params.church;
-    return { slug };
-  },
+    asyncData: ({ $config, params }) => ({
+        churchSlug: params.church,
+        classSlug: params.class,
+        baseURL: $config.baseURL,
+    // return { churchSlug, classSlug, baseURL };
+  }),
   async fetch() {
-    this.church = this.getLandingPage().data;
-  },
-  components: {
-    Dropdown
+    this.church = this.getLandingPage();
   },
   data: () => ({
     translations: {
@@ -138,8 +136,15 @@ export default {
       return this.translations[this.church.sermon.locale][value];
     },
     getLandingPage() {
+
+        fetch(`${this.$config.apiURL}/api/v1/church-page${this.$route.path}`)
+            .then(response => response.json())
+            .then(response => this.church = response.data)
+            .catch(e => {
+                error({ statusCode: 404, message: 'Church class not found' })
+            });
+
       return {
-        data: {
           id: 33,
           title: "odit eos natus",
           start_time: "2020-10-15 09:12:00",
@@ -174,7 +179,7 @@ export default {
           ],
           sermon: {
             id: 9,
-            locale: 'es',
+            locale: 'en',
             title: "A Bride for Isaac",
             theme: "Some random theme title",
             s4k_url: "https://web-sermons4kids.test/bride_for_isaac.htm",
@@ -262,21 +267,23 @@ export default {
                 "https://web-sermons4kids.test/a-bride-for-isaac-daily-discussion",
             },
           ],
-        },
-      };
+        };
     },
     lessonDate(){
       return DateTime.fromSQL(this.church.start_time).toLocaleString(DateTime.DATE_FULL);
     },
   },
   computed: {
+    churchUrl(){
+        return `/${this.churchSlug}`;
+    },
     gradientBackground(){
       return "background-image: linear-gradient(60deg,#6f159d 0%,#7eccf0 100%)!important";
     },
     dropdownItems(){
       return this.church.grades.map(grade => {
         return {
-          url: `${this.slug}/${grade.slug}`,
+          url: `/${this.churchSlug}/${grade.slug}`,
           text: grade.title
         }
       })
