@@ -7434,7 +7434,22 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-tailwindcss@^1.7.3:
+tailwindcss-aspect-ratio@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-aspect-ratio/-/tailwindcss-aspect-ratio-3.0.0.tgz#4f9fc7ca0f3468373290faaa8b92652157bee6a4"
+  integrity sha512-syVueHOdk0u6S9lFSQQxHwsYS+9AJ0tp1WWBB+vAwmJYzc9g/2OLwq4mHpigYue6t3PUgTSbRi9unQd7WEDjGQ==
+  dependencies:
+    lodash "^4.17.15"
+
+tailwindcss-responsive-embed@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-responsive-embed/-/tailwindcss-responsive-embed-1.0.0.tgz#1182a5774576e961a87b4226d58055f29c408c54"
+  integrity sha512-LE27r3IFGTf1CpXuGoGDoTfsMA03K3BnS5mx/cRg+RVBavpHlNzWx/lIYUpe4TOGi1PAwBf6qEdjpVHRlUJVSg==
+  dependencies:
+    tailwindcss "^1.2.0"
+    tailwindcss-aspect-ratio "^3.0.0"
+
+tailwindcss@^1.2.0, tailwindcss@^1.7.3:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.8.10.tgz#945ef151c401c04a1c95e6a6bc747387a8d1b9dc"
   integrity sha512-7QkERG/cWCzsuMqHMwjOaLMVixOGLNBiXsrkssxlE1aWfkxVbGqiuMokR2162xRyaH2mBIHKxmlf1qb3DvIPqw==

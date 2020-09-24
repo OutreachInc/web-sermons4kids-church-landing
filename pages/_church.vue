@@ -12,29 +12,37 @@
 
   <div class="relative z-10 px-4 mx-auto mb-28 max-w-7xl sm:px-6 lg:px-8">
     <div class="flex flex-wrap -mx-6 space-y-8">
-      <div class="z-10 w-full px-6 text-center lg:w-1/2 -mt-60">
+      <div class="z-10 w-full px-6 text-center lg:w-1/2" :class="{'-mt-52': !church.video_embed, '-mt-60': !!church.video_embed}">
           <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">{{ church.sermon.title }}</h1>
-          <div class="mt-4 font-sans text-xl font-bold tracking-tight text-white">Lesson for {{ lessonDate() }}</div>
-          <div class="relative flex justify-center mt-8">
-            <video src="https://sermons4kids.s3.amazonaws.com/13741/Water-From-A-Rock.mp4" controls="controls" preload="none" class="w-full rounded-lg shadow-lg outline-none" style=""></video>
+          <div class="mt-4 font-sans text-xl font-bold tracking-tight text-white">{{ translate('Lesson_for') }} {{ lessonDate() }}</div>
+
+          <div class="max-w-xl mx-auto mt-8" v-if="church.video_embed">
+            <div class="mt-3 mb-5 rounded-lg shadow-lg embed-responsive aspect-ratio-16/9">
+              <iframe class="embed-responsive-item" :src="church.video_embed" allowfullscreen></iframe>
+            </div>
           </div>
-          <div class="mt-6 font-body">
-            <h3 class="text-2xl font-medium text-curious-blue-500">Theme</h3>
+
+          <div :class="{'mt-40': !church.video_embed, 'mt-10': !!church.video_embed}">
+            <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Theme') }}</h3>
             <p class="text-xl text-gray-600">{{ church.sermon.theme }}</p>
           </div>
-          <div class="mt-6 font-body">
-            <h3 class="text-2xl font-medium text-curious-blue-500">Scripture</h3>
+          <div class="mt-6">
+            <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Scripture') }}</h3>
             <p class="text-xl text-gray-600">{{ church.sermon.scripture }}</p>
           </div>
-          <div class="relative flex justify-center mt-8">
-            <video src="https://sermons4kids.s3.amazonaws.com/13741/Water-From-A-Rock.mp4" controls="controls" preload="none" class="w-full rounded-lg shadow-lg outline-none" style=""></video>
-          </div>
+          <resource-video-player
+            v-if="church.video_lesson"
+            :video="church.video_lesson"
+            class="max-w-xl mx-auto mt-12"
+          ></resource-video-player>
       </div>
       <div class="flex items-center justify-center w-full px-6 lg:w-1/4">
         <div>
-          <h3 class="text-3xl font-medium leading-10 text-curious-blue-500 font-subheading">Activites + Resources</h3>
+          <h3 class="text-3xl font-medium leading-10 text-curious-blue-500 font-subheading">
+            {{ translate('Activites_Resources') }}
+          </h3>
           <a href="/" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600" download="" target="_blank">
-            Download All
+            {{ translate('Download_All') }}
           </a>
           <ul class="mt-6">
             <li class="flex items-center my-4" v-for="resource in church.resources" :key="resource.id">
@@ -51,24 +59,24 @@
       </div>
       <div class="flex items-center justify-center w-full px-6 lg:w-1/4 lg:order-first">
         <div class="max-w-sm">
-          <h3 class="text-3xl font-semibold leading-tight text-center text-minsk-500">Daily Discussion</h3>
-          <p class="mt-2 text-sm leading-normal">Daily Discussion questions correspond with the lesson your kids learned the previous Sunday.</p>
+          <h3 class="text-3xl font-semibold leading-tight text-center text-minsk-500">{{ translate('Daily_Discussion') }}</h3>
+          <p class="mt-2 text-sm leading-normal">{{ translate('daily_discussion_overview') }}</p>
           <div class="mt-2">
-            <label for="email" class="block text-sm font-medium leading-5 text-gray-700">Email</label>
+            <label for="email" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Email') }}</label>
             <div class="relative mt-1 rounded-md shadow-sm">
               <input id="email" type="email" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="you@example.com">
             </div>
           </div>
           <div class="mt-2 text-center">OR</div>
           <div class="">
-            <label for="phone" class="block text-sm font-medium leading-5 text-gray-700">Phone</label>
+            <label for="phone" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Phone') }}</label>
             <div class="relative mt-1 rounded-md shadow-sm">
               <input id="phone" type="tel" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="888-888-8888">
             </div>
           </div>
           <div class="flex justify-center">
           <a href="/" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600" target="_blank">
-            Sign Up
+            {{ translate('Sign_Up') }}
           </a>
           </div>
         </div>
@@ -96,10 +104,39 @@ export default {
     Dropdown
   },
   data: () => ({
+    translations: {
+      en: {
+        Activities_Resources: "Activities + Resources",
+        Daily_Discussion: "Daily Discussion",
+        daily_discussion_overview: "Daily Discussion questions correspond with the lesson your kids learned the previous Sunday.",
+        Download_All: "Download All",
+        Email: "Email",
+        Lesson_for: "Lesson for",
+        Phone: "Phone",
+        Theme: "Theme",
+        Scripture: "Scripture",
+        Sign_Up: "Sign Up",
+      },
+      es: {
+        Activities_Resources: "Actividades + recursos",
+        Daily_Discussion: "Discusión diaria",
+        daily_discussion_overview: "Las preguntas de discusión diaria corresponden a la lección que sus hijos aprendieron el domingo anterior.",
+        Download_All: "Descargar todo",
+        Email: "Email",
+        Lesson_for: "Lección para",
+        Phone: "Teléfono",
+        Theme: "Tema",
+        Scripture: "Escritura",
+        Sign_Up: "Regístrate",
+      }
+    },
     church: {},
   }),
 
   methods: {
+    translate(value){
+      return this.translations[this.church.sermon.locale][value];
+    },
     getLandingPage() {
       return {
         data: {
@@ -137,6 +174,7 @@ export default {
           ],
           sermon: {
             id: 9,
+            locale: 'es',
             title: "A Bride for Isaac",
             theme: "Some random theme title",
             s4k_url: "https://web-sermons4kids.test/bride_for_isaac.htm",
@@ -146,6 +184,12 @@ export default {
               },
             ],
             scripture: "Genesis 24:67",
+          },
+          video_embed: "https://www.youtube.com/embed/eW7Twd85m2g", // nullable
+          video_lesson: {
+            title: 'Water From A Rock',
+            thumb_url: 'https://sermons4kids.s3.amazonaws.com/13742/conversions/Agua-de-una-roca-thumb.jpg',
+            video_url: 'https://sermons4kids.s3.amazonaws.com/13741/Water-From-A-Rock.mp4',
           },
           resources: [
             {
