@@ -61,24 +61,26 @@
         <div class="max-w-sm">
           <h3 class="text-3xl font-semibold leading-tight text-center text-minsk-500">{{ translate('Daily_Discussion') }}</h3>
           <p class="mt-2 text-sm leading-normal">{{ translate('daily_discussion_overview') }}</p>
-          <div class="mt-2">
-            <label for="email" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Email') }}</label>
-            <div class="relative mt-1 rounded-md shadow-sm">
-              <input id="email" type="email" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="you@example.com">
+          <form method="GET" :action="`${$config.apiURL}/${churchSlug}/parents`">
+            <div class="mt-2">
+              <label for="email" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Email') }}</label>
+              <div class="relative mt-1 rounded-md shadow-sm">
+                <input id="email" type="email" name="email" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="you@example.com" required>
+              </div>
             </div>
-          </div>
-          <div class="mt-2 text-center">OR</div>
-          <div class="">
-            <label for="phone" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Phone') }}</label>
-            <div class="relative mt-1 rounded-md shadow-sm">
-              <input id="phone" type="tel" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="888-888-8888">
+            <!-- <div class="mt-2 text-center">OR</div>
+            <div class="">
+              <label for="phone" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Phone') }}</label>
+              <div class="relative mt-1 rounded-md shadow-sm">
+                <input id="phone" type="tel" class="block w-full form-input sm:text-sm sm:leading-5" placeholder="888-888-8888">
+              </div>
+            </div> -->
+            <div class="flex justify-center">
+              <button type="submit" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600">
+                {{ translate('Sign_Up') }}
+              </button>
             </div>
-          </div>
-          <div class="flex justify-center">
-          <a href="/" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600" target="_blank">
-            {{ translate('Sign_Up') }}
-          </a>
-          </div>
+          </form>
         </div>
       </div>
     </div>
