@@ -3,41 +3,52 @@
   <div class="relative h-80" :style="gradientBackground">
     <div class="z-10 flex items-center justify-between w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <h2>
-        <NuxtLink :to="churchUrl" class="font-sans text-3xl font-semibold tracking-tight text-white opacity-75">{{ church.title }}</NuxtLink>
+        <NuxtLink :to="`/${church.slug}`" class="font-sans text-3xl font-semibold tracking-tight text-white opacity-75">{{ church.name }}</NuxtLink>
       </h2>
-      <Dropdown :label="church.grade.title" :items="dropdownItems" class="mt-4"></Dropdown>
+      <Dropdown :label="grade.title" :items="dropdownItems" class="mt-4" v-if="dropdownItems.length"></Dropdown>
     </div>
     <div class="absolute bottom-0 w-full h-10 bottom-flow-divider sm:h-14 md:h-16 lg:h-20 xl:h-24"></div>
   </div>
 
   <div class="relative z-10 px-4 mx-auto mb-28 max-w-7xl sm:px-6 lg:px-8">
     <div class="flex flex-wrap -mx-6 space-y-8">
-      <div class="z-10 w-full px-6 text-center lg:w-1/2" :class="{'-mt-52': !church.video_embed, '-mt-60': !!church.video_embed}">
-          <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">{{ church.sermon.title }}</h1>
+      <div v-if="event" class="z-10 w-full px-6 text-center lg:w-1/2" :class="{'-mt-52': !event.video_embed, '-mt-60': !!event.video_embed}">
+          <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">{{ event.sermon.title }}</h1>
           <div class="mt-4 font-sans text-xl font-bold tracking-tight text-white">{{ translate('Lesson_for') }} {{ lessonDate() }}</div>
 
-          <div class="max-w-xl mx-auto mt-8" v-if="church.video_embed">
+          <div class="max-w-xl mx-auto mt-8" v-if="event.video_embed">
             <div class="mt-3 mb-5 rounded-lg shadow-lg embed-responsive aspect-ratio-16/9">
-              <iframe class="embed-responsive-item" :src="church.video_embed" allowfullscreen></iframe>
+              <iframe class="embed-responsive-item" :src="event.video_embed" allowfullscreen></iframe>
             </div>
           </div>
 
-          <div :class="{'mt-40': !church.video_embed, 'mt-10': !!church.video_embed}">
-            <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Theme') }}</h3>
-            <p class="text-xl text-gray-600">{{ church.sermon.theme }}</p>
+          <div :class="{'mt-40': !event.video_embed, 'mt-10': !!event.video_embed}">
+            <div v-if="event.sermon.theme">
+              <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Theme') }}</h3>
+              <p class="text-xl text-gray-600">{{ event.sermon.theme }}</p>
+            </div>
+            <div class="mt-6" v-if="event.sermon.scripture">
+              <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Scripture') }}</h3>
+              <p class="text-xl text-gray-600">{{ event.sermon.scripture }}</p>
+            </div>
+            <resource-video-player
+              v-if="event.video_lesson"
+              :video="event.video_lesson"
+              class="max-w-xl mx-auto mt-12"
+            ></resource-video-player>
           </div>
-          <div class="mt-6">
-            <h3 class="text-2xl font-medium text-curious-blue-500">{{ translate('Scripture') }}</h3>
-            <p class="text-xl text-gray-600">{{ church.sermon.scripture }}</p>
-          </div>
-          <resource-video-player
-            v-if="church.video_lesson"
-            :video="church.video_lesson"
-            class="max-w-xl mx-auto mt-12"
-          ></resource-video-player>
+      </div>
+      <!-- No Event -->
+      <div class="z-10 w-full px-6 text-center lg:w-1/2 -mt-52" v-else>
+        <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">
+          {{ translate('No_Event') }}
+        </h1>
+        <a :href="`${$config.baseURL}/scheduler`" class="inline-flex items-center px-4 py-2 mt-6 text-sm font-medium leading-5 text-indigo-700 transition duration-150 ease-in-out bg-indigo-100 border border-transparent rounded-md hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200">
+          {{ translate('Schedule_Events') }}
+        </a>
       </div>
       <div class="flex items-center justify-center w-full px-6 lg:w-1/4">
-        <div>
+        <div v-if="event && event.resources">
           <h3 class="text-3xl font-medium leading-10 text-curious-blue-500 font-subheading">
             {{ translate('Activites_Resources') }}
           </h3>
@@ -45,8 +56,9 @@
             {{ translate('Download_All') }}
           </a>
           <ul class="mt-6">
-            <li class="flex items-center my-4" v-for="resource in church.resources" :key="resource.id">
+            <li class="flex items-center my-4" v-for="(resource, index) in event.resources" :key="index" >
               <a
+              v-if="resource"
               :href="resource.s4k_url"
               target="_blank"
               class="flex-initial text-xl font-normal leading-6 text-center text-curious-blue-500 font-subheading">
@@ -61,7 +73,7 @@
         <div class="max-w-sm">
           <h3 class="text-3xl font-semibold leading-tight text-center text-minsk-500">{{ translate('Daily_Discussion') }}</h3>
           <p class="mt-2 text-sm leading-normal">{{ translate('daily_discussion_overview') }}</p>
-          <form method="GET" :action="`${$config.apiURL}/${churchSlug}/parents`">
+          <form method="GET" :action="`https://sermons4kids.com/${church.slug}/parents`">
             <div class="mt-2">
               <label for="email" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Email') }}</label>
               <div class="relative mt-1 rounded-md shadow-sm">
@@ -94,14 +106,16 @@
 <script>
 import { DateTime } from "luxon";
 export default {
-    asyncData: ({ $config, params }) => ({
-        churchSlug: params.church,
-        classSlug: params.class,
-        baseURL: $config.baseURL,
-    // return { churchSlug, classSlug, baseURL };
-  }),
-  async fetch() {
-    this.church = this.getLandingPage();
+    async asyncData ({ $axios, $config, params, error }) {
+      let data = await $axios.$get(`/church-pages/${params.church}/${params.class}`).catch(e => {
+        error({ statusCode: e.response.status, message: e.response.data.message })
+      });
+      return {
+        church: data.team,
+        event: data.event,
+        grade: data.grade,
+        grades: data.grades,
+      }
   },
   data: () => ({
     translations: {
@@ -116,6 +130,8 @@ export default {
         Theme: "Theme",
         Scripture: "Scripture",
         Sign_Up: "Sign Up",
+        No_Event: "No Upcoming Events Scheduled",
+        Schedule_Events: "Schedule Events"
       },
       es: {
         Activities_Resources: "Actividades + recursos",
@@ -128,164 +144,37 @@ export default {
         Theme: "Tema",
         Scripture: "Escritura",
         Sign_Up: "Regístrate",
+        No_Event: "No hay eventos próximos programados",
+        Schedule_Events: "Schedule Events"
       }
     },
-    church: {},
   }),
+  mounted(){
 
+  },
   methods: {
     translate(value){
-      return this.translations[this.church.sermon.locale][value];
+      var lang = this.event ? this.event.sermon.locale : 'en';
+      return this.translations[lang][value];
     },
     getLandingPage() {
 
-        fetch(`${this.$config.apiURL}/api/v1/church-page${this.$route.path}`)
-            .then(response => response.json())
-            .then(response => this.church = response.data)
-            .catch(e => {
-                error({ statusCode: 404, message: 'Church class not found' })
-            });
-
-      return {
-          id: 33,
-          title: "odit eos natus",
-          start_time: "2020-10-15 09:12:00",
-          grade: {
-            id: 93,
-            title: "Preschool",
-          },
-          grades: [
-            {
-              id: 93,
-              title: "Preschool",
-              slug: "preschool"
-            },
-            {
-              id: 94,
-              title: "1st-2nd Grade",
-              slug: "1st-2nd-grade",
-            },
-            {
-              id: 95,
-              title: "3rd-4th Grade",
-              slug: "3rd-4th-grade",
-            },
-          ],
-          teachers: [
-            {
-              id: 2705,
-              name: "Norma Johnson",
-              email: "pastor.norma01@gmail.com",
-              church_role: null,
-            },
-          ],
-          sermon: {
-            id: 9,
-            locale: 'en',
-            title: "A Bride for Isaac",
-            theme: "Some random theme title",
-            s4k_url: "https://web-sermons4kids.test/bride_for_isaac.htm",
-            verses: [
-              {
-                verse: "Genesis 24:1-67",
-              },
-            ],
-            scripture: "Genesis 24:67",
-          },
-          video_embed: "https://www.youtube.com/embed/eW7Twd85m2g", // nullable
-          video_lesson: {
-            title: 'Water From A Rock',
-            thumb_url: 'https://sermons4kids.s3.amazonaws.com/13742/conversions/Agua-de-una-roca-thumb.jpg',
-            video_url: 'https://sermons4kids.s3.amazonaws.com/13741/Water-From-A-Rock.mp4',
-          },
-          resources: [
-            {
-              id: 684,
-              type: "Group Activities",
-              s4k_url:
-                "https://web-sermons4kids.test/bride_for_isaac_group_activities.htm",
-            },
-            {
-              id: 685,
-              type: "Crossword",
-              s4k_url:
-                "https://web-sermons4kids.test/bride_for_isaac_crossword.htm",
-            },
-            {
-              id: 686,
-              type: "Decoder",
-              s4k_url:
-                "https://web-sermons4kids.test/bride_for_isaac_decoder.htm",
-            },
-            {
-              id: 687,
-              type: "Word Search",
-              s4k_url:
-                "https://web-sermons4kids.test/bride_for_isaac_wordsearch.htm",
-            },
-            {
-              id: 1458,
-              type: "Coloring Page",
-              s4k_url: "https://web-sermons4kids.test/isaac_rebekah_colorpg",
-            },
-            {
-              id: 1670,
-              type: "Worship Bulletin",
-              s4k_url: "https://web-sermons4kids.test/bride_for_isaac_bulletin",
-            },
-            {
-              id: 3828,
-              type: "Handout",
-              s4k_url:
-                "https://web-sermons4kids.test/find-the-bride-dot-handout",
-            },
-            {
-              id: 3829,
-              type: "Video Instruction",
-              s4k_url:
-                "https://web-sermons4kids.test/a-bride-for-isaac-how-to-video",
-            },
-            {
-              id: 3830,
-              type: "Video Lesson",
-              s4k_url: "https://web-sermons4kids.test/a-bride-for-isaac",
-            },
-            {
-              id: 3831,
-              type: "Full Elementary Lesson Plan",
-              s4k_url:
-                "https://web-sermons4kids.test/a-bride-for-isaac-elementary-lesson",
-            },
-            {
-              id: 3832,
-              type: "Full Preschool Lesson Plan",
-              s4k_url:
-                "https://web-sermons4kids.test/a-bride-for-isaac-preschool-lesson",
-            },
-            {
-              id: 3834,
-              type: "Daily Discussion",
-              s4k_url:
-                "https://web-sermons4kids.test/a-bride-for-isaac-daily-discussion",
-            },
-          ],
-        };
     },
     lessonDate(){
-      return DateTime.fromSQL(this.church.start_time).toLocaleString(DateTime.DATE_FULL);
+      return DateTime.fromSQL(this.event.start_time).toLocaleString(DateTime.DATE_FULL);
     },
   },
   computed: {
     churchUrl(){
-        return `/${this.churchSlug}`;
+        return `/${this.church.slug}`;
     },
     gradientBackground(){
       return "background-image: linear-gradient(60deg,#6f159d 0%,#7eccf0 100%)!important";
     },
     dropdownItems(){
-      return this.church.grades.map(grade => {
+      return this.grades.map(grade => {
         return {
-          url: `/${this.churchSlug}/${grade.slug}`,
+          url: `/${this.church.slug}/${grade.slug}`,
           text: grade.title
         }
       })
