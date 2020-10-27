@@ -11,7 +11,7 @@
   </div>
 
   <div class="relative z-10 px-4 mx-auto mb-28 max-w-7xl sm:px-6 lg:px-8">
-    <div class="flex flex-wrap -mx-6 space-y-8">
+    <div class="flex flex-wrap space-y-8 lg:-mx-6">
       <div v-if="event" class="z-10 w-full px-6 text-center lg:w-1/2" :class="{'-mt-52': !event.video_embed, '-mt-60': !!event.video_embed}">
           <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">{{ event.sermon.title }}</h1>
           <div class="mt-4 font-sans text-xl font-bold tracking-tight text-white">{{ translate('Lesson_for') }} {{ lessonDate() }}</div>
@@ -149,8 +149,18 @@ export default {
       }
     },
   }),
-  mounted(){
-
+  head() {
+    return {
+      title: `${this.church.name} ${this.grade.title} | Children\'s Curriculum`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Resources and activities for parents of ' + this.church.name
+        }
+      ],
+      link: [{ rel: 'icon', href: this.church.photo_url }]
+    }
   },
   methods: {
     translate(value){
