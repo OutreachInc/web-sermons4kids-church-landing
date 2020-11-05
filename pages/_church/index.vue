@@ -77,7 +77,7 @@
         <div class="max-w-sm">
           <h3 class="text-3xl font-semibold leading-tight text-center text-minsk-500">{{ translate('Daily_Discussion') }}</h3>
           <p class="mt-2 text-sm leading-normal">{{ translate('daily_discussion_overview') }}</p>
-          <form method="GET" :action="`https://sermons4kids.com/${church.slug}/parents`">
+          <form method="GET" :action="`${$config.baseURL}/${church.slug}/parents`">
             <div class="mt-2">
               <label for="email" class="block text-sm font-medium leading-5 text-gray-700">{{ translate('Email') }}</label>
               <div class="relative mt-1 rounded-md shadow-sm">
