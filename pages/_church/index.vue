@@ -111,8 +111,12 @@
 <script>
 import { DateTime } from "luxon";
 export default {
-    async asyncData ({ $axios, $config, params, error }) {
-      let data = await $axios.$get(`/church-pages/${params.church}`).catch(e => {
+    async asyncData ({ $axios, $config, params, query, error }) {
+      let url = `/church-pages/${params.church}`;
+      if (query.event){
+        url += `?event_id=${query.event_id}`
+      }
+      let data = await $axios.$get(url).catch(e => {
         error({ statusCode: e.response.status, message: e.response.data.message })
       });
       return {
