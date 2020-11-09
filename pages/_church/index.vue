@@ -60,13 +60,21 @@
             {{ translate('Download_All') }}
           </a>
           <ul class="mt-6">
-            <li class="flex items-center my-4" v-for="(resource, index) in event.resources" :key="index" >
+            <li class="flex items-center" v-for="(resource, index) in event.resources" :key="index">
               <a
-              v-if="resource"
-              :href="resource.media_url ? resource.media_url : resource.s4k_url"
+              v-if="resource && resource.media_url"
+              :href="resource.media_url"
               target="_blank"
-              :download="!!resource.media_url"
-              class="flex-initial text-xl font-normal leading-6 text-center text-curious-blue-500 font-subheading">
+              download
+              class="flex-initial my-4 text-xl font-normal leading-6 text-center text-curious-blue-500 font-subheading">
+                  <span class="mr-2 text-crusta-500">&rsaquo;</span>
+                  {{resource.type}}
+              </a>
+              <a
+              v-else-if="resource"
+              :href="resource.s4k_url"
+              target="_blank"
+              class="flex-initial my-4 text-xl font-normal leading-6 text-center text-curious-blue-500 font-subheading">
                   <span class="mr-2 text-crusta-500">&rsaquo;</span>
                   {{resource.type}}
               </a>
@@ -113,7 +121,7 @@ import { DateTime } from "luxon";
 export default {
     async asyncData ({ $axios, $config, params, query, error }) {
       let url = `/church-pages/${params.church}`;
-      if (query.event){
+      if (query.event_id){
         url += `?event_id=${query.event_id}`
       }
       let data = await $axios.$get(url).catch(e => {
