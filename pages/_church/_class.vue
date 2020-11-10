@@ -2,8 +2,8 @@
 <div class="h-screen font-body">
   <div class="relative h-80" :style="gradientBackground">
     <div class="z-10 flex items-center justify-between w-full px-4 pt-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <h2>
-        <NuxtLink :to="`/${church.slug}`" class="font-sans text-3xl font-semibold leading-none tracking-tight text-white opacity-75">{{ church.name }}</NuxtLink>
+      <h2 class="leading-tight">
+        <NuxtLink :to="`/${church.slug}`" class="font-sans text-2xl font-semibold leading-none tracking-tight text-white opacity-75 md:text-3xl">{{ church.name }}</NuxtLink>
       </h2>
       <Dropdown :label="grade.title" :items="dropdownItems" v-if="dropdownItems.length"></Dropdown>
     </div>
