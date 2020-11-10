@@ -31,7 +31,7 @@
       leave-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0"
     >
-      <div v-show="isOpen" class="absolute right-0 w-56 mt-2 origin-top-right rounded-md shadow-lg" v-cloak>
+      <div v-show="isOpen" class="absolute right-0 z-20 w-56 mt-2 origin-top-right rounded-md shadow-lg" v-cloak>
         <div class="bg-white rounded-md shadow-xs">
           <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <a
