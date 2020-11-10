@@ -56,7 +56,7 @@
             {{ translate('Download_All') }}
           </a>
           <ul class="mt-6">
-            <li class="flex items-center my-4" v-for="(resource, index) in event.resources" :key="index" >
+            <li class="flex items-center" v-for="(resource, index) in event.resources" :key="index" >
               <a
               v-if="resource && resource.media_url"
               :href="resource.media_url"
