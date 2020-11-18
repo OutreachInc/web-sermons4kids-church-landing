@@ -28,7 +28,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  created(){
+    return window.location = this.$config.baseURL;
+  }
+}
 </script>
 
 <style>

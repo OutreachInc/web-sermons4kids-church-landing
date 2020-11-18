@@ -46,13 +46,23 @@ export default {
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: 'https://sermons4kids.test/api/v1'
+  },
 
   // Tailwind
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
     configPath: 'tailwind.config.js',
     exposeConfig: false,
+  },
+
+  publicRuntimeConfig: {
+    axios: {
+      baseURL: process.env.API_URL
+    },
+    baseURL: process.env.BASE_URL,
+    apiURL: process.env.API_URL
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

@@ -1,6 +1,6 @@
 <template>
 <div class="h-screen font-body">
-  <div class="relative h-80" :style="gradientBackground">
+ <div class="relative h-80" :style="gradientBackground">
     <div class="z-10 flex items-center justify-between w-full px-4 pt-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <h2 class="leading-tight">
         <NuxtLink :to="`/${church.slug}`" class="font-sans text-2xl font-semibold leading-none tracking-tight text-white opacity-75 md:text-3xl">{{ church.name }}</NuxtLink>
@@ -13,7 +13,11 @@
   <div class="relative z-10 px-4 mx-auto mb-28 max-w-7xl sm:px-6 lg:px-8">
     <div class="flex flex-wrap space-y-8 lg:-mx-6">
       <div v-if="event" class="z-10 w-full px-6 text-center lg:w-1/2 -mt-52">
-          <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">{{ event.sermon.title }}</h1>
+          <a :href="event.sermon.s4k_url" target="_blank">
+            <h1 class="text-4xl font-semibold leading-10 tracking-tighter text-white font-subheading">
+              {{ event.sermon.title }}
+            </h1>
+          </a>
           <div class="mt-4 font-sans text-xl font-bold tracking-tight text-white">{{ translate('Lesson_for') }} {{ lessonDate() }}</div>
 
           <div class="max-w-xl mx-auto mt-8" v-if="event.video_embed">
@@ -52,11 +56,11 @@
           <h3 class="text-3xl font-medium leading-10 text-curious-blue-500 font-subheading">
             {{ translate('Activites_Resources') }}
           </h3>
-          <a href="/" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600" download="" target="_blank">
+          <a :href="`${$config.baseURL}/events/${event.id}/download`" class="inline-flex px-12 py-2 mt-6 text-lg text-white rounded-full bg-minsk-500 hover:bg-minsk-600" download target="_blank">
             {{ translate('Download_All') }}
           </a>
           <ul class="mt-6">
-            <li class="flex items-center" v-for="(resource, index) in event.resources" :key="index" >
+            <li class="flex items-center" v-for="(resource, index) in event.resources" :key="index">
               <a
               v-if="resource && resource.media_url"
               :href="resource.media_url"
@@ -116,8 +120,12 @@
 <script>
 import { DateTime } from "luxon";
 export default {
-    async asyncData ({ $axios, $config, params, error }) {
-      let data = await $axios.$get(`/church-pages/${params.church}/${params.class}`).catch(e => {
+    async asyncData ({ $axios, $config, params, query, error }) {
+      let url = `/church-pages/${params.church}`;
+      if (query.event_id){
+        url += `?event_id=${query.event_id}`
+      }
+      let data = await $axios.$get(url).catch(e => {
         error({ statusCode: e.response.status, message: e.response.data.message })
       });
       return {
@@ -154,14 +162,14 @@ export default {
         Theme: "Tema",
         Scripture: "Escritura",
         Sign_Up: "Regístrate",
-        No_Event: "No hay eventos próximos programados",
+        No_Event: "No Upcoming Events Scheduled",
         Schedule_Events: "Schedule Events"
       }
     },
   }),
   head() {
     return {
-      title: `${this.church.name} ${this.grade.title} | Children\'s Curriculum`,
+      title: this.church.name + ' | Children\'s Curriculum',
       meta: [
         {
           hid: 'description',
